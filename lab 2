@@ -1,0 +1,49 @@
+
+#include<iostream>
+using namespace std;
+
+void showShifts(int A)
+{
+	cout << "1 сдвиг вправо:" << (A >> 1) << endl;
+
+	cout << "2 сдвиг вправо:" << (A >> 2) << endl;
+
+	cout << "3 сдвиг вправо:" << (A >> 3) << endl;
+
+}
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+
+	int A, i, M;
+
+	cout << "введите число А:";
+
+	cin >> A;
+
+	cout << "введите номер бита i :";
+
+	cin >> i;
+
+	if (i == A) {
+
+		cout << (A >> 3) << endl;
+	}
+
+	else {
+		cout << "введите число M: ";
+
+		cin >> M;
+	}
+
+		if (M > 5) {
+
+			cout << "M больше 5";
+		}
+		else {
+
+			cout << "M меньше 5";
+		}
+
+	return 0;
+	}
