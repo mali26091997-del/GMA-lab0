@@ -1,69 +1,64 @@
+#include <iostream>
+#include <bitset>
 
-#include<iostream>
 using namespace std;
-
-void showShifts(int A)
-{
-	cout << "1 сдвиг вправо:" << (A >> 1) << endl;
-
-	cout << "2 сдвиг вправо:" << (A >> 2) << endl;
-
-	cout << "3 сдвиг вправо:" << (A >> 3) << endl;
-
-}
 int main()
-{
-	setlocale(LC_ALL, "Russian");
+	{
+		setlocale(LC_ALL, "Russian");
 
-	short A;
-	int i;
+		short A;
+		int i;
 
-	cout << "введите число А:";
-	cin >> A;
+		cout << "введите число А:";
+		cin >> A;
 
-	cout << "введите номер бита i (от 0 до 7) :";
-	cin >> i;
+		cout << "введите номер бита i (от 0 до 7) :";
+		cin >> i;
 
-	//проверяем корректность i
+		//проверяем корректность i
 
-	if (i < 0 || i>7) {
+		if (i < 0 || i>7) {
 
-		cout << "не соответствует критериям";
+			cout << "не соответствует критериям";
 
-		return 1;
-	}
+			return 1;
+		}
 
-	// переводим в двоичную систему
+		// переводим в двоичную систему
 
-	cout << A << " = " << bitset <8>(A) << endl;
-	short bit = (A >> i) & 1;
-	cout << "Значение " << i << "бита:" << bit << endl;
+		cout << A << " = " << bitset <8>(A) << endl;
+		short bit = (A >> i) & 1;
+		cout << "Значение " << i << "бита:" << bit << endl;
 
+		cout << (A >> 3) << endl;
 
-	   cout << (A >> 3) << endl;
-
-	   if (i == A) {
-
-		   cout << (A >> 3) << endl;
-	   }
-
-	   else {
 		int M;
+		   if (i == A) {
 
-		cout << "введите число M: ";
-		
-		cin >> M;
-	    }
+			   cout << "1 сдвиг вправо:" << (A >> 1) << endl;
 
-		if (M > 5) {
+			   cout << "2 сдвиг вправо:" << (A >> 2) << endl;
 
-			cout << "M больше 5 на " << M-5 << endl;
-		 } 
-		 else {
+			   cout << "3 сдвиг вправо:" << (A >> 3) << endl;
+		   }
 
-			cout << "M меньше 5 на"  << M-5 << endl;
-		  }
+		   else {
+			
 
-	return 0;
+			cout << "введите число M: ";
+			
+			cin >> M;
+		    }
 
-}
+			if (M > 5) {
+
+				cout << "M больше 5 на " << M-5 << endl;
+			 } 
+			 else {
+
+				cout << "M меньше 5 на"  << 5-M << endl;
+			  }
+
+		return 0;
+
+	}
