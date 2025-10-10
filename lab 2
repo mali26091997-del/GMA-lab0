@@ -28,7 +28,7 @@ int main()
 		cout << "Значение " << i << "бита:" << bit << endl;
 		cout << (A >> 3) << endl;
 		
-		   if (i == A) {
+		   if (i==1) {
 			   cout << "1 сдвиг вправо:" << (bitset <8>(A) >> 1) << endl;
 			   cout << "2 сдвиг вправо:" << (bitset <8>(A) >> 2) << endl;
 			   cout << "3 сдвиг вправо:" << (bitset <8>(A) >> 3) << endl;
@@ -41,10 +41,43 @@ int main()
 				if (M > 5) {
 				cout << "M больше 5 на " << M-5 << endl;
 				 } 
-				 else {
+				 else if (M < 5) {
 				cout << "M меньше 5 на"  << 5-M << endl;
 				 } 
+				 else if (M == 5) {
+					cout << "M равен 5 " << endl;
+				}
 		   }
-		return 0;
 
+	return 0;
 	}
+
+#include <iostream>
+using namespace std;
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+
+	int N;
+	cout << "Введите число N: ";
+	cin >> N;
+
+	if (N < 0 || N>7) {
+		cout << "не соответствует критериям";
+		return 1;
+	}
+	else {
+
+		switch (N) {
+		case 1: cout << "Понедельник" << endl; break;
+		case 2: cout << "Вторник" << endl; break;
+		case 3: cout << "Среда" << endl; break;
+		case 4: cout << "Четверг" << endl; break;
+		case 5: cout << "Пятница" << endl; break;
+		case 6: cout << "Суббота" << endl; break;
+		case 7: cout << "Воскресенье" << endl; break;
+		default: cout << "В неделе только 7 дней" << endl; break;
+		}
+	}
+	return 0;
+}
