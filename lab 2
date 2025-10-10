@@ -15,35 +15,55 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 
-	int A, i, M;
+	short A;
+	int i;
 
 	cout << "введите число А:";
-
 	cin >> A;
 
-	cout << "введите номер бита i :";
-
+	cout << "введите номер бита i (от 0 до 7) :";
 	cin >> i;
 
-	if (i == A) {
+	//проверяем корректность i
 
-		cout << (A >> 3) << endl;
+	if (i < 0 || i>7) {
+
+		cout << "не соответствует критериям";
+
+		return 1;
 	}
 
-	else {
+	// переводим в двоичную систему
+
+	cout << A << " = " << bitset <8>(A) << endl;
+	short bit = (A >> i) & 1;
+	cout << "Значение " << i << "бита:" << bit << endl;
+
+
+	   cout << (A >> 3) << endl;
+
+	   if (i == A) {
+
+		   cout << (A >> 3) << endl;
+	   }
+
+	   else {
+		int M;
+
 		cout << "введите число M: ";
-
+		
 		cin >> M;
-	}
+	    }
 
 		if (M > 5) {
 
-			cout << "M больше 5";
-		}
-		else {
+			cout << "M больше 5 на " << M-5 << endl;
+		 } 
+		 else {
 
-			cout << "M меньше 5";
-		}
+			cout << "M меньше 5 на"  << M-5 << endl;
+		  }
 
 	return 0;
-	}
+
+}
