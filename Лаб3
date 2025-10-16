@@ -44,16 +44,15 @@ int main() {
 }
 
 
-//
-Задание 2
-
 #include <iostream>
 using namespace std;
 int main() {
+    
+    // Задание 2
 
     setlocale(LC_ALL, "Russian");
 
-    cout << "Enter the number " << endl;
+    cout << "Введите число " << endl;
 
     short num;
     int sum = 0;
@@ -62,7 +61,7 @@ int main() {
     short num1;
     num1 = abs(num);
     if (num1 > 1000) {
-    cout << "Error: |x| > 1000" << endl;
+    cout << "Ощибка: |x| > 1000" << endl;
     }
     else {
         while (num1 > 0) {
@@ -75,4 +74,3 @@ int main() {
 
 return 0;
 }
-
