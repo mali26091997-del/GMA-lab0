@@ -3,19 +3,17 @@ using namespace std;
 int main() {
 
     setlocale(LC_ALL, "Russian");
-
     // Задание 1
-
-    cout << "Enter N" << endl;
+    cout << "Введите количество чисел последовательности" << endl;
     int n;
     cin >> n;
     int numCnt = 0;
     int minNumCnt = -1;
     int product = 1;
-    int min = 99999999999999;
+    int min = 9999999999999;
     for (n; n > 0; --n) {
         ++numCnt;
-        cout << "Enter the " << numCnt << " number" << endl;
+        cout << "Введите " << numCnt << " число" << endl;
         int num;
         cin >> num;
         if (abs(num) % 10 == 3) {
@@ -24,9 +22,7 @@ int main() {
                 min = num;
                 minNumCnt = numCnt;
             }
-
-        }
-            
+        }    
     }
     if (minNumCnt != -1) {
         cout << "Произведение " << product << endl;
@@ -38,9 +34,7 @@ int main() {
         cout << "Нет подходящих номеров" << endl;
         cout << "Конец" << endl;
     }
-
-
-    return 0;
+        return 0;
 }
 
 
@@ -66,7 +60,7 @@ int main() {
     else {
         while (num1 > 0) {
              sum += num1 % 10;
-            num1 /= 10;
+             num1 /= 10;
      }
          cout << "Сумма цифр числа = " << sum << endl;
          cout << "Конец" << endl;
