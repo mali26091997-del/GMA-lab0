@@ -10,7 +10,7 @@ int main() {
     int nummin = 0;
     int minNum = -1;
     int pro = 1;
-    int min = 9999999999999;
+   int min = INT_MAX;
     for (n; n > 0; --n) {
         ++nummin;
         cout << "Введите " << nummin << " число" << endl;
