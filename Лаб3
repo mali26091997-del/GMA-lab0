@@ -7,7 +7,6 @@ void processSequence() {
     cout << "Введите количество чисел в последовательности: ";
     cin >> n;
 
-    long long product = 1; // Произведение чисел, заканчивающихся на 3
     bool hasNumbersEndingWithThree = false; // Есть ли подходящие числа?
     int minValue = INT_MAX; // Начальное значение минимума
     int indexOfMinValue = -1; // Индекс минимальной величины
