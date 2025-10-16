@@ -1,122 +1,44 @@
 #include <iostream>
 using namespace std;
-
-// Функция для первого пункта
-void processSequence() {
-    int n;
-    cout << "Введите количество чисел в последовательности: ";
-    cin >> n;
-
-    bool hasNumbersEndingWithThree = false; // Есть ли подходящие числа?
-    int minValue = INT_MAX; // Начальное значение минимума
-    int indexOfMinValue = -1; // Индекс минимальной величины
-
-    for (int i = 0; i < n; ++i) {
-        int number;
-        cout << "Введите " << i + 1 << "-ое число: ";
-        cin >> number;
-
-        if (number % 10 != 3) { // Пропускаем числа, не оканчивающиеся на 3
-            continue;
-        }
-
-        hasNumbersEndingWithThree = true; // Нашли подходящее число
-        product *= number; // Умножаем на очередное число
-
-        // Определяем минимальное число и его индекс
-        if (number < minValue || indexOfMinValue == -1) {
-            minValue = number;
-            indexOfMinValue = i + 1; // Индексация с единицы
-        }
-    }
-
-    if (!hasNumbersEndingWithThree) {
-        cout << "Нет чисел, оканчивающихся на 3." << endl;
-    } else {
-        cout << "Произведение чисел, оканчивающихся на 3: " << product << endl;
-        cout << "Минимальное число, оканчивающееся на 3: " << minValue << ", его индекс: " << indexOfMinValue << endl;
-    }
-}
-
-
-// Функция для второго пункта
-void findDigitSum() {
-    int x;
-    cout << "Введите целое число X (меньше 1000): ";
-    cin >> x;
-
-    int digitSum = 0;
-    while (x > 0) {
-        digitSum += x % 10;     // Добавляем последнюю цифру
-        x /= 10;                // Удаляем последнюю цифру
-    }
-
-    cout << "Сумма цифр числа равна: " << digitSum << endl;
-}
-
-
-
-
-
-#include <iostream>
-using namespace std;
-
-// Реализация первой задачи
-void processSequence() {
-    int n;
-    cout << "Введите количество чисел в последовательности: ";
-    cin >> n;
-
-    long long product = 1; // Хранит произведение чисел, оканчивающихся на 3
-    bool hasNumbersEndingWithThree = false; // Признак существования подходящих чисел
-    int minValue = INT_MAX; // Минус бесконечность для инициализации минимума
-    int indexOfMinValue = -1; // Индекс минимального числа
-
-    for (int i = 0; i < n; ++i) {
-        int number;
-        cout << "Введите " << i + 1 << "-ое число: ";
-        cin >> number;
-
-        if (number % 10 != 3) { // Пропускаем числа, не оканчивающиеся на 3
-            continue;
-        }
-
-        hasNumbersEndingWithThree = true; // Подходящее число обнаружено
-        product *= number; // Увеличиваем произведение
-
-        // Обновляем минимальный элемент и его индекс
-        if (number < minValue || indexOfMinValue == -1) {
-            minValue = number;
-            indexOfMinValue = i + 1; // Индексация с единицы
-        }
-    }
-
-    if (!hasNumbersEndingWithThree) {
-        cout << "Нет чисел, оканчивающихся на 3." << endl;
-    } else {
-        cout << "Произведение чисел, оканчивающихся на 3: " << product << endl;
-        cout << "Минимальное число, оканчивающееся на 3: " << minValue << ", его индекс: " << indexOfMinValue << endl;
-    }
-}
-
-// Реализация второй задачи
-void findDigitSum() {
-    int x;
-    cout << "Введите целое число X (меньше 1000): ";
-    cin >> x;
-
-    int digitSum = 0;
-    while (x > 0) {
-        digitSum += x % 10; // Добавляем последнюю цифру
-        x /= 10; // Отбрасываем последнюю цифру
-    }
-
-    cout << "Сумма цифр числа равна: " << digitSum << endl;
-}
-
-// Главная функция программы
 int main() {
-    processSequence(); // Выполняем пункт 1
-    findDigitSum();    // Выполняем пункт 2
+
+    setlocale(LC_ALL, "Russian");
+
+    // Задание 1
+
+    cout << "Enter N" << endl;
+    int n;
+    cin >> n;
+    int numCnt = 0;
+    int minNumCnt = -1;
+    int product = 1;
+    int min = 0;
+    for (n; n > 0; --n) {
+        ++numCnt;
+        cout << "Enter the " << numCnt << " number" << endl;
+        int num;
+        cin >> num;
+        if (abs(num) % 10 == 3) {
+            product = product * num;
+            if (num < min) {
+                min = num;
+                minNumCnt = numCnt;
+            }
+
+        }
+            
+    }
+    if (minNumCnt != -1) {
+        cout << "Произведение " << product << endl;
+        cout << "мин = " << min << endl;
+        cout << "номер мин элемента " << minNumCnt << endl;
+        cout << "конец" << endl;
+    }
+    else {
+        cout << "Нет подходящих номеров" << endl;
+        cout << "Конец" << endl;
+    }
+
+
     return 0;
 }
