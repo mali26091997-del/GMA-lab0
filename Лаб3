@@ -7,32 +7,30 @@ int main() {
     cout << "Введите количество чисел последовательности" << endl;
     int n;
     cin >> n;
-    int numCnt = 0;
-    int minNumCnt = -1;
-    int product = 1;
+    int nummin = 0;
+    int minNum = -1;
+    int pro = 1;
     int min = 9999999999999;
     for (n; n > 0; --n) {
-        ++numCnt;
-        cout << "Введите " << numCnt << " число" << endl;
+        ++nummin;
+        cout << "Введите " << nummin << " число" << endl;
         int num;
         cin >> num;
         if (abs(num) % 10 == 3) {
-            product = product * num;
+            pro = pro * num;
             if (num < min) {
                 min = num;
-                minNumCnt = numCnt;
+                minNum = nummin;
             }
         }    
     }
-    if (minNumCnt != -1) {
-        cout << "Произведение " << product << endl;
+    if (minNum != -1) {
+        cout << "Произведение " << pro << endl;
         cout << "мин = " << min << endl;
-        cout << "номер мин элемента " << minNumCnt << endl;
-        cout << "конец" << endl;
+        cout << "номер мин элемента " << minNum << endl;
     }
     else {
         cout << "Нет подходящих номеров" << endl;
-        cout << "Конец" << endl;
     }
         return 0;
 }
@@ -63,7 +61,6 @@ int main() {
              num1 /= 10;
      }
          cout << "Сумма цифр числа = " << sum << endl;
-         cout << "Конец" << endl;
     }
 
 return 0;
