@@ -56,7 +56,7 @@ int main() {
                 ++cnt;
             }
         }
-        if (cnt > cnt1) {
+        if ( (cnt > cnt1) and (cnt>0) ) {
             cnt1 = cnt;
             numOfM = j;
         }
@@ -70,7 +70,7 @@ int main() {
         }
         cout << endl;
     }
-
+    if(numOfM != -1)
     for (int i = 0; i < 3; ++i) {
 
         f[i][numOfM] = 100;
