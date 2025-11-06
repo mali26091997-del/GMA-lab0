@@ -3,7 +3,7 @@
 using namespace std;
 
 int secondaryFunction(int n1, int n2) {
-    cout << "The function of summing two numbers" << endl;
+    cout << "Вычислить сумму двух чисел" << endl;
     int sum = 0;
     while (n1 > 0) {
         sum += abs(n1) % 10;
@@ -18,7 +18,7 @@ int secondaryFunction(int n1, int n2) {
 
 
 int secondaryFunction(int n1, int n2, int n3) {
-    cout << "The function of maximum numbers and 25" << endl;
+    cout << "Найти наибольшее значение из 3х чисел и 25" << endl;
     int max_value = max({ n1, n2, n3 });
     return max(max_value, 25);
 }
@@ -43,7 +43,7 @@ int mainFunction(int num1, int num2, int num3) {
         return secondaryFunction(nonZeroNumbers[0], nonZeroNumbers[1], nonZeroNumbers[2]);
     }
     if (nonZeroNumbers.size() < 2) {
-        cout << "Incorrect number input" << endl;
+        cout << "Ошибка" << endl;
         return 0;
     }
 
@@ -51,36 +51,7 @@ int mainFunction(int num1, int num2, int num3) {
 
 void task1() {
     int a, b, c;
-    cout << "Enter three numbers ";
+    cout << "Введите 3 числа ";
     cin >> a >> b >> c;
     cout << mainFunction(a, b, c) << endl;
-}
-void task2(unsigned short  height, unsigned short base1, unsigned short base2) {
-
-    float square = (base1 + base2) * height / 2.0;
-    cout << "The square of the trapezoid (float):" << std::endl << square << endl;
-    cout << "unsigned short: занимает " << sizeof(unsigned short) * 8 << " бит, мин значение = " << "0" << " макс значение = " << pow(2, 16) - 1 << endl;
-    cout << "float: занимает " << sizeof(float) * 8 << " бит, мин значение = " << numeric_limits<float>::lowest() << " макс значение = " << numeric_limits<float>::max() << endl;
-}
-
-int main() {
-    bool flag;
-    cout << "Enter the task (task 1 - 0, task 2 - 1)" << endl;
-    cin >> flag;
-    if (flag) {
-        unsigned short height_, base1_, base2_;
-
-        cout << "Enter the height of the trapezoid: " << endl;
-        cin >> height_;
-
-        cout << "Enter the first base of the trapezoid: " << endl;
-        cin >> base1_;
-
-        cout << "Enter the second base of the trapezoid: " << endl;
-        cin >> base2_;
-        task2(height_, base1_, base2_);
-    }
-    else {
-        task1();
-    }
 }
