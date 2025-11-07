@@ -1,9 +1,8 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
 int secondaryFunction(int n1, int n2) {
-    cout << "Вычислить сумму двух чисел" << endl;
+    cout << "Вычислить сумму цифр двух чисел" << endl;
     int sum = 0;
     while (n1 > 0) {
         sum += abs(n1) % 10;
@@ -47,11 +46,4 @@ int mainFunction(int num1, int num2, int num3) {
         return 0;
     }
 
-}
-
-void task1() {
-    int a, b, c;
-    cout << "Введите 3 числа ";
-    cin >> a >> b >> c;
-    cout << mainFunction(a, b, c) << endl;
 }
