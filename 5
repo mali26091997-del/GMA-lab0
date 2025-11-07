@@ -1,1 +1,54 @@
+#include <iostream>
+using namespace std;
 
+
+int FirstFunction(int a, int b) {
+    cout << "Сумма цифр двух чисел" << endl;
+    int sum = 0;
+    while (a > 0) {
+        sum += abs(a) % 10;
+        a /= 10;
+    }
+    while (b > 0) {
+        sum += abs(b) % 10;
+        b /= 10;
+    }
+    return sum;
+}
+int secondaryFunction(int n1, int n2, int n3) {
+    cout << "Наибольшее значение из 3х чисел и 25" << endl;
+    int max_value = max({ n1, n2, n3 });
+    return max(max_value, 25);
+}
+void task1() {
+    int a, b;
+    cout << "Введите 2 числа ";
+    cin >> a >> b;
+    cout << FirstFunction(a, b) << endl;
+}
+void task2() {
+    int n1, n2, n3;
+    cout << "Введите 3 числа ";
+    cin >> n1 >> n2 >> n3;
+    cout << secondaryFunction(n1, n2, n3) << endl;
+}
+int main() 
+{
+    setlocale(LC_ALL, "Russian");
+    int num;
+    cout << "Введите номер задания " << endl;
+    cin >> num;
+    switch (num) {
+    
+    case 1:
+        task1();
+        break;
+    case 2:
+        task2();
+        break;
+    default:
+        cout << "Неверный номер" << endl;
+
+    }
+    return 0;
+    } 
