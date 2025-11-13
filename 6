@@ -1,0 +1,237 @@
+
+// Функция для задач с матрицей
+int* findZeroRows(int** matrix, int rows, int cols, int& zeroCount) {
+    zeroCount = 0;
+    
+    // Первый проход - подсчет строк с нулями
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] == 0) {
+                zeroCount++;
+                break; // Переходим к следующей строке
+            }
+        }
+    }
+    
+    if (zeroCount == 0) return nullptr;
+    
+    // Выделение памяти для массива индексов
+    int* zeroRows = (int*)malloc(zeroCount * sizeof(int));
+    if (zeroRows == nullptr) return nullptr;
+    
+    // Второй проход - заполнение массива индексов
+    int index = 0;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] == 0) {
+                zeroRows[index++] = i;
+                break;
+            }
+        }
+    }
+    
+    return zeroRows;
+}
+
+// Функция для удаления строк из матрицы
+int** removeRows(int** matrix, int rows, int cols, int* rowsToRemove, int removeCount, int& newRows) {
+    if (removeCount == 0) return matrix;
+    
+    newRows = rows - removeCount;
+    if (newRows <= 0) return nullptr;
+    
+    // Создание новой матрицы
+    int** newMatrix = (int**)malloc(newRows * sizeof(int*));
+    if (newMatrix == nullptr) return nullptr;
+    
+    for (int i = 0; i < newRows; i++) {
+        newMatrix[i] = (int*)malloc(cols * sizeof(int));
+        if (newMatrix[i] == nullptr) {
+            // Освобождение памяти в случае ошибки
+            for (int j = 0; j < i; j++) {
+                free(newMatrix[j]);
+            }
+            free(newMatrix);
+            return nullptr;
+        }
+    }
+    
+    // Копирование строк, кроме удаляемых
+    int newRowIndex = 0;
+    for (int i = 0; i < rows; i++) {
+        bool shouldRemove = false;
+        for (int j = 0; j < removeCount; j++) {
+            if (rowsToRemove[j] == i) {
+                shouldRemove = true;
+                break;
+            }
+        }
+        
+        if (!shouldRemove) {
+            for (int j = 0; j < cols; j++) {
+                newMatrix[newRowIndex][j] = matrix[i][j];
+            }
+            newRowIndex++;
+        }
+    }
+    
+    return newMatrix;
+}
+
+// Функция для работы с указателями
+void pointerOperations() {
+    int a, b;
+    
+    cout << "Введите значение a: ";
+    cin >> a;
+    cout << "Введите значение b: ";
+    cin >> b;
+    
+    int* ptrA = &a;
+    int* ptrB = &b;
+    
+    // Увеличиваем a в 2 раза через указатель
+    *ptrA *= 2;
+    cout << "После увеличения a в 2 раза: a = " << a << ", b = " << b << endl;
+    
+    // Меняем местами через указатели
+    int temp = *ptrA;
+    *ptrA = *ptrB;
+    *ptrB = temp;
+    
+    cout << "После обмена: a = " << a << ", b = " << b << endl;
+}
+
+int main() {
+    int choice;
+    
+    do {
+        cout << "\nВыберите задачу:" << endl;
+        cout << "1 - Работа с матрицей" << endl;
+        cout << "2 - Работа с указателями" << endl;
+        cout << "0 - Выход" << endl;
+        cout << "Ваш выбор: ";
+        cin >> choice;
+        
+        switch (choice) {
+            case 1: {
+                // Создание начальной матрицы 2x2
+                int** matrix = (int**)malloc(2 * sizeof(int*));
+                for (int i = 0; i < 2; i++) {
+                    matrix[i] = (int*)malloc(2 * sizeof(int));
+                }
+                
+                // Ввод данных с проверкой
+                int A, B, C, D;
+                
+                do {
+                    cout << "Введите A (неотрицательное): ";
+                    cin >> A;
+                    if (A < 0) cout << "Ошибка! A должно быть неотрицательным." << endl;
+                } while (A < 0);
+                
+                do {
+                    cout << "Введите B (неотрицательное): ";
+                    cin >> B;
+                    if (B < 0) cout << "Ошибка! B должно быть неотрицательным." << endl;
+                } while (B < 0);
+                
+                cout << "Введите C: ";
+                cin >> C;
+                cout << "Введите D: ";
+                cin >> D;
+                
+                // Заполнение начальной матрицы
+                matrix[0][0] = C;
+                matrix[0][1] = D;
+                matrix[1][0] = C;
+                matrix[1][1] = D;
+                
+                // Создание расширенной матрицы
+                int newRows = 2 + A;
+                int newCols = 2 + B;
+                
+                int** extendedMatrix = (int**)malloc(newRows * sizeof(int*));
+                for (int i = 0; i < newRows; i++) {
+                    extendedMatrix[i] = (int*)malloc(newCols * sizeof(int));
+                    for (int j = 0; j < newCols; j++) {
+                        extendedMatrix[i][j] = i * C + j * D;
+                    }
+                }
+                
+                // Вывод расширенной матрицы
+                cout << "\nРасширенная матрица:" << endl;
+                for (int i = 0; i < newRows; i++) {
+                    for (int j = 0; j < newCols; j++) {
+                        cout << extendedMatrix[i][j] << "\t";
+                    }
+                    cout << endl;
+                }
+                
+                // Поиск строк с нулями
+                int zeroCount;
+                int* zeroRows = findZeroRows(extendedMatrix, newRows, newCols, zeroCount);
+                
+                if (zeroCount > 0) {
+                    cout << "\nСтроки с нулевыми элементами: ";
+                    for (int i = 0; i < zeroCount; i++) {
+                        cout << zeroRows[i] << " ";
+                    }
+                    cout << endl;
+                    
+                    // Удаление строк
+                    int finalRows;
+                    int** finalMatrix = removeRows(extendedMatrix, newRows, newCols, zeroRows, zeroCount, finalRows);
+                    
+                    if (finalMatrix != nullptr) {
+                        cout << "\nМатрица после удаления строк:" << endl;
+                        for (int i = 0; i < finalRows; i++) {
+                            for (int j = 0; j < newCols; j++) {
+                                cout << finalMatrix[i][j] << "\t";
+                            }
+                            cout << endl;
+                        }
+                        
+                        // Освобождение памяти finalMatrix
+                        for (int i = 0; i < finalRows; i++) {
+                            free(finalMatrix[i]);
+                        }
+                        free(finalMatrix);
+                    }
+                    
+                    free(zeroRows);
+                } else {
+                    cout << "\nНет строк с нулевыми элементами." << endl;
+                }
+                
+                // Освобождение памяти
+                for (int i = 0; i < 2; i++) {
+                    free(matrix[i]);
+                }
+                free(matrix);
+                
+                for (int i = 0; i < newRows; i++) {
+                    free(extendedMatrix[i]);
+                }
+                free(extendedMatrix);
+                
+                break;
+            }
+            
+            case 2:
+                pointerOperations();
+                break;
+                
+            case 0:
+                cout << "Выход из программы." << endl;
+                break;
+                
+            default:
+                cout << "Неверный выбор!" << endl;
+                break;
+        }
+        
+    } while (choice != 0);
+    
+    return 0;
+}
