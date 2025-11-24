@@ -168,7 +168,9 @@ using namespace std;
 
                     // Удаление строк
                     int finalRows;
-                    int** finalMatrix = removeRows(extendedMatrix, newRows, newCols, zeroRows, zeroCount, finalRows);
+                    int** finalMatrix = removeRows(extendedMatrix, newRows, newCols, zeroRows, zeroCount, 
+
+finalRows);
 
                     if (finalMatrix != nullptr) {
                         cout << "\nМатрица после удаления строк:" << endl;
