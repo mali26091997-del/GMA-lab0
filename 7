@@ -1,202 +1,375 @@
 #include <iostream>
 #include <vector>
+#include <array>
+#include <random>
 #include <algorithm>
-#include <numeric>
+#include <ctime>
+#include <iomanip>
 
-class VectorManager {
-private:
-    std::vector<int> vec;
-    int variant = 6; // вариант по умолчанию
-public:
-    // 1. Просмотр массива
-    void displayVector() {
-        std::cout << "[";
-        for (size_t i = 0; i < vec.size(); ++i) {
-            std::cout << vec[i];
-            if (i != vec.size() - 1) {
-                std::cout << " ";
-            }
+using namespace std;
+
+// ======================== ПУНКТ 1 ========================
+// Используем vector для пункта 1
+
+vector<int> arr;  // Основной массив для пункта 1
+
+// Функция просмотра массива
+void viewArray() {
+    if (arr.empty()) {
+        cout << "Массив пуст []" << endl;
+        return;
+    }
+    cout << "[";
+    for (size_t i = 0; i < arr.size(); i++) {
+        cout << arr[i];
+        if (i != arr.size() - 1) cout << " ";
+    }
+    cout << "]" << endl;
+}
+
+// Добавление элемента в начало
+void addToBeginning(int value) {
+    arr.insert(arr.begin(), value);
+}
+
+// Добавление элемента в конец
+void addToEnd(int value) {
+    arr.push_back(value);
+}
+
+// Очистка массива
+void clearArray() {
+    arr.clear();
+}
+
+// Поиск элемента в массиве
+void searchElement(int value) {
+    vector<int> indices;
+    for (size_t i = 0; i < arr.size(); i++) {
+        if (arr[i] == value) {
+            indices.push_back(i);
         }
-        std::cout << "]" << std::endl;
     }
-    // 2. Добавить элемент в начало
-    void addToBeginning(int value) {
-        vec.insert(vec.begin(), value);
+
+    if (indices.empty()) {
+        cout << "Элемент " << value << " не найден []" << endl;
     }
-    // 3. Добавить элемент в конец
-    void addToEnd(int value) {
-        vec.push_back(value);
-    }
-    // 4. Очистка всего массива
-    void clearVector() {
-        vec.clear();
-    }
-    // 5. Поиск элемента в массиве
-    void findElement(int value) {
-        std::vector<size_t> indices;
-        for (size_t i = 0; i < vec.size(); ++i) {
-            if (vec[i] == value) {
-                indices.push_back(i);
-            }
+    else {
+        cout << "Индексы элемента " << value << ": [";
+        for (size_t i = 0; i < indices.size(); i++) {
+            cout << indices[i];
+            if (i != indices.size() - 1) cout << ", ";
         }
-        std::cout << "[";
-        for (size_t i = 0; i < indices.size(); ++i) {
-            std::cout << indices[i];
-            if (i != indices.size() - 1) {
-                std::cout << ",";
-            }
-        }
-        std::cout << "]" << std::endl;
+        cout << "]" << endl;
     }
-    // задание 1
-    void processVariant3bl() {
-        std::cout << "До обработки: ";
-        displayVector();
-        if (vec.size() % 2 == 0) {
-            // Если кол-во элементов четное - удалить первый
-            if (!vec.empty()) {
-                vec.erase(vec.begin());
-                std::cout << "Удален первый элемент (четное количество)" << std::endl;
-            }
+}
+
+// Функция для варианта: если количество элементов четное, удалить первый, иначе удалить до 4 последних если возможно
+void variantTask() {
+    cout << "До выполнения задания: ";
+    viewArray();
+
+    if (arr.empty()) {
+        cout << "Массив пуст, нечего удалять" << endl;
+        return;
+    }
+
+    if (arr.size() % 2 == 0) {
+        // Четное количество элементов - удалить первый
+        if (!arr.empty()) {
+            cout << "Удаляем первый элемент (" << arr[0] << ")" << endl;
+            arr.erase(arr.begin());
+        }
+    }
+    else {
+        // Нечетное количество элементов - удалить до 4 последних если возможно
+        if (arr.size() > 4) {
+            cout << "Удаляем элементы с индексами 0 до " << arr.size() - 5 << endl;
+            arr.erase(arr.begin(), arr.begin() + (arr.size() - 4));
         }
         else {
-            // Если нечетное - удалить до 4 последних если возможно
-            size_t elementsToRemove = std::min(vec.size(), size_t(4));
-            if (elementsToRemove > 0) {
-                vec.erase(vec.end() - elementsToRemove, vec.end());
-                std::cout << "Удалено " << elementsToRemove << " последних элементов (нечетное количество)" << std::endl;
-            }
+            cout << "Не удается удалить до 4 последних (в массиве всего " << arr.size() << " элементов)" << endl;
         }
-        std::cout << "После обработки: ";
-        displayVector();
     }
-    // Разбиение слагаемых
-    void processVariant5() {
-        std::cout << "Введите число K: ";
-        int K;
-        std::cin >> K;
 
-        std::cout << "До обработки: ";
-        displayVector();
+    cout << "После выполнения задания: ";
+    viewArray();
+}
 
-        // Находим последовательные числа, сумма которых равна K
-        std::vector<int> numbers;
-        int sum = 0;
-        int current = 1;
+// Дополнительный вариант: разбить сумму поровну в начало и конец
+void variant5() {
+    cout << "Введите число K: ";
+    int K;
+    cin >> K;
 
-        while (sum < K) {
-            numbers.push_back(current);
-            sum += current;
-            current++;
-        }
-        // Если сумма превысила K, убираем лишние элементы
-        while (sum > K && !numbers.empty()) {
-            sum -= numbers.back();
-            numbers.pop_back();
-        }
-        if (sum != K) {
-            std::cout << "Не удалось найти последовательные числа с суммой " << K << std::endl;
-            return;
-        }
-        // Разбиваем числа поровну в начало и конец
-        size_t half = numbers.size() / 2;
-        std::vector<int> firstHalf, secondHalf;
-
-        for (size_t i = 0; i < numbers.size(); ++i) {
-            if (i < half) {
-                firstHalf.push_back(numbers[i]);
-            }
-            else {
-                secondHalf.push_back(numbers[i]);
-            }
-        }
-        // Очищаем текущий вектор и заполняем поочередно
-        std::vector<int> newVec;
-
-        // Чередуем элементы из первой и второй половин
-        size_t maxSize = std::max(firstHalf.size(), secondHalf.size());
-        for (size_t i = 0; i < maxSize; ++i) {
-            if (i < firstHalf.size()) {
-                newVec.push_back(firstHalf[i]);
-            }
-            if (i < secondHalf.size()) {
-                newVec.push_back(secondHalf[i]);
-            }
-        }
-        vec = newVec;
-
-        std::cout << "После обработки: ";
-        displayVector();
-        std::cout << "Использованные числа: ";
-        for (int num : numbers) {
-            std::cout << num << " ";
-        }
-        std::cout << std::endl;
+    // Находим максимальное n такое, что сумма 1..n <= K
+    int sum = 0;
+    int n = 0;
+    while (sum + (n + 1) <= K) {
+        n++;
+        sum += n;
     }
-    // Главное меню
-    void showMenu() {
-        int choice;
-        do {
-            std::cout << "\n=== МЕНЮ ===" << std::endl;
-            std::cout << "0. Выход" << std::endl;
-            std::cout << "1. Просмотр массива" << std::endl;
-            std::cout << "2. Добавить элемент в начало" << std::endl;
-            std::cout << "3. Добавить элемент в конец" << std::endl;
-            std::cout << "4. Очистка всего массива" << std::endl;
-            std::cout << "5. Поиск элемента в массиве" << std::endl;
-            std::cout << "6. Задание варианта" << std::endl;
-            std::cout << "7. Обработка по разбиению слагаемых" << std::endl;
-            std::cout << "Выберите действие: ";
-            std::cin >> choice;
 
-            switch (choice) {
-            case 0:
-                std::cout << "Выход..." << std::endl;
-                break;
-            case 1:
-                displayVector();
-                break;
-            case 2: {
-                int value;
-                std::cout << "Введите элемент для добавления в начало: ";
-                std::cin >> value;
-                addToBeginning(value);
-                break;
-            }
-            case 3: {
-                int value;
-                std::cout << "Введите элемент для добавления в конец: ";
-                std::cin >> value;
-                addToEnd(value);
-                break;
-            }
-            case 4:
-                clearVector();
-                std::cout << "Массив очищен" << std::endl;
-                break;
-            case 5: {
-                int value;
-                std::cout << "Введите элемент для поиска: ";
-                std::cin >> value;
-                findElement(value);
-                break;
-            }
-            case 6:
-                processVariant3bl();
-                break;
-            case 7:
-                processVariant5();
-                break;
-            default:
-                std::cout << "Неверный выбор!" << std::endl;
-            }
-        } while (choice != 0);
+    cout << "Для K=" << K << " можно использовать числа 1.." << n << " (сумма=" << sum << ")" << endl;
+
+    // Очищаем массив и заполняем нулями
+    int size = max(3, n);  // Минимум 3 элемента
+    arr.clear();
+    arr.resize(size, 0);
+
+    // Распределяем числа поочередно в начало и конец
+    int leftIdx = 0;
+    int rightIdx = size - 1;
+
+    for (int i = 1; i <= n; i++) {
+        if (i % 2 == 1) {
+            // Нечетные числа в начало
+            arr[leftIdx++] = i;
+        }
+        else {
+            // Четные числа в конец
+            arr[rightIdx--] = i;
+        }
     }
-};
+    cout << "Результат: ";
+    viewArray();
+}
 
+// Пункта 1
+void menuPunkt1() {
+    int choice;
+    do {
+        cout << "\n=== МЕНЮ (std::vector) ===" << endl;
+        cout << "0. Выход из меню" << endl;
+        cout << "1. Просмотр массива" << endl;
+        cout << "2. Добавить элемент в начало" << endl;
+        cout << "3. Добавить элемент в конец" << endl;
+        cout << "4. Очистка всего массива" << endl;
+        cout << "5. Поиск элемента в массиве" << endl;
+        cout << "6. Выполнить задание варианта" << endl;
+        cout << "7. Дополнительный вариант " << endl;
+        cout << "Выберите пункт: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 0:
+            cout << "Выход из меню..." << endl;
+            break;
+        case 1:
+            viewArray();
+            break;
+        case 2: {
+            int value;
+            cout << "Введите значение для добавления в начало: ";
+            cin >> value;
+            addToBeginning(value);
+            cout << "Элемент добавлен" << endl;
+            break;
+        }
+        case 3: {
+            int value;
+            cout << "Введите значение для добавления в конец: ";
+            cin >> value;
+            addToEnd(value);
+            cout << "Элемент добавлен" << endl;
+            break;
+        }
+        case 4:
+            clearArray();
+            cout << "Массив очищен" << endl;
+            break;
+        case 5: {
+            int value;
+            cout << "Введите элемент для поиска: ";
+            cin >> value;
+            searchElement(value);
+            break;
+        }
+        case 6:
+            variantTask();
+            break;
+        case 7:
+            variant5();
+            break;
+        default:
+            cout << "Неверный пункт меню!" << endl;
+        }
+    } while (choice != 0);
+}
+
+// ======================== ПУНКТ 2 ========================
+// Используем array для пункта 2
+
+// Функции сортировки с разными способами передачи параметров
+
+// 1. По значению (работает с копией массива)
+void sortByValue(array<int, 10> arr, bool ascending) {
+    if (ascending) {
+        sort(arr.begin(), arr.end());
+    }
+    else {
+        sort(arr.begin(), arr.end(), greater<int>());
+    }
+    cout << "Внутри функции sortByValue: ";
+    for (int i = 0; i < 10; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+// 2. По ссылке (работает с оригинальным массивом)
+void sortByReference(array<int, 10>& arr, bool ascending) {
+    if (ascending) {
+        sort(arr.begin(), arr.end());
+    }
+    else {
+        sort(arr.begin(), arr.end(), greater<int>());
+    }
+    cout << "Внутри функции sortByReference: ";
+    for (int i = 0; i < 10; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+// 3. По указателю (работает с оригинальным массивом)
+void sortByPointer(array<int, 10>* arr, bool ascending) {
+    if (ascending) {
+        sort(arr->begin(), arr->end());
+    }
+    else {
+        sort(arr->begin(), arr->end(), greater<int>());
+    }
+    cout << "Внутри функции sortByPointer: ";
+    for (int i = 0; i < 10; i++) {
+        cout << (*arr)[i] << " ";
+    }
+    cout << endl;
+}
+
+void demonstrateSorting() {
+    cout << "\n=== ДЕМОНСТРАЦИЯ РАЗНЫХ СПОСОБОВ ПЕРЕДАЧИ АРГУМЕНТОВ ===" << endl;
+
+    // Инициализация генератора случайных чисел
+    mt19937 gen(time(nullptr));
+    uniform_int_distribution<> dist(-10, 10);
+
+    // Создаем и заполняем массив
+    array<int, 10> myArray;
+    cout << "Исходный массив: ";
+    for (int i = 0; i < 10; i++) {
+        myArray[i] = dist(gen);
+        cout << myArray[i] << " ";
+    }
+    cout << endl;
+
+    // 1. Передача по значению
+    {
+        cout << "\n1. ПЕРЕДАЧА ПО ЗНАЧЕНИЮ:" << endl;
+        cout << "Сортировка по возрастанию..." << endl;
+        array<int, 10> copyArray = myArray;  // Создаем копию
+        sortByValue(copyArray, true);
+        cout << "Оригинальный массив после sortByValue: ";
+        for (int i = 0; i < 10; i++) {
+            cout << myArray[i] << " ";
+        }
+        cout << endl;
+        cout << "Вывод: оригинальный массив не изменился, т.к. функция работала с копией." << endl;
+    }
+
+    // 2. Передача по ссылке
+    {
+        cout << "\n2. ПЕРЕДАЧА ПО ССЫЛКЕ:" << endl;
+        cout << "Сортировка по убыванию..." << endl;
+        array<int, 10> copyArray = myArray;  // Восстанавливаем оригинальные значения
+        sortByReference(copyArray, false);
+        cout << "Массив после sortByReference: ";
+        for (int i = 0; i < 10; i++) {
+            cout << copyArray[i] << " ";
+        }
+        cout << endl;
+        cout << "Вывод: массив изменился, т.к. функция работала с оригиналом через ссылку." << endl;
+    }
+
+    // 3. Передача по указателю
+    {
+        cout << "\n3. ПЕРЕДАЧА ПО УКАЗАТЕЛЮ:" << endl;
+        cout << "Сортировка по возрастанию..." << endl;
+        array<int, 10> copyArray = myArray;  // Восстанавливаем оригинальные значения
+        sortByPointer(&copyArray, true);
+        cout << "Массив после sortByPointer: ";
+        for (int i = 0; i < 10; i++) {
+            cout << copyArray[i] << " ";
+        }
+        cout << endl;
+        cout << "Вывод: массив изменился, т.к. функция работала с оригиналом через указатель." << endl;
+    }
+}
 int main() {
     setlocale(LC_ALL, "Russian");
-    VectorManager manager;
-    manager.showMenu();
+    srand(time(nullptr));
+    int mainChoice;
+    do {
+        cout << "\n=== ГЛАВНОЕ МЕНЮ ===" << endl;
+        cout << "1. Пункт 1 - Работа с вектором (динамический массив)" << endl;
+        cout << "2. Пункт 2 - Демонстрация способов передачи параметров (статический массив)" << endl;
+        cout << "0. Выход из программы" << endl;
+        cout << "Выберите пункт: ";
+        cin >> mainChoice;
+
+        switch (mainChoice) {
+        case 0:
+            cout << "Выход из программы..." << endl;
+            break;
+        case 1:
+            menuPunkt1();
+            break;
+        case 2:
+            demonstrateSorting();
+            break;
+        default:
+            cout << "Неверный пункт меню!" << endl;
+        }
+    } while (mainChoice != 0);
     return 0;
 }
+
+
+                          ОБЪЯСНЕНИЕ РАЗНИЦЫ
+    Передача по значению: создается полная копия массива, функция работает с копией
+    Плюсы: оригинальные данные защищены от изменений
+    Минусы: тратится память и время на копирование (особенно для больших массивов)
+    Передача по ссылке: функция получает доступ к оригинальному массиву 
+    Плюсы: эффективно по памяти и времени, можно изменять оригинал
+    Минусы: оригинал может быть изменен случайно
+    Передача по указателю: аналогична передаче по ссылке, но с синтаксисом указателей
+    Плюсы: можно передать nullptr, явно видно, что может быть изменение
+    Минусы: более сложный синтаксис, риск ошибок с указателями.
+
+
+
+                              ПУНКТ 3  
+
+    ОБЪЯСНЕНИЕ ВЫБОРА РЕАЛИЗАЦИИ
+    Пункт 1: используется std::vector, потому что: 
+    Нужны динамические операции (добавление, удаление элементов)
+    Размер массива может меняться во время выполнения
+    Требуется очистка всего массива (vector::clear())
+    vector предоставляет удобные методы insert(), erase(), push_back()
+
+    Пункт 2: используется std::array, потому что:
+    Размер фиксирован (10 элементов)
+    Нужен статический массив для демонстрации передачи параметров
+    array быстрее для небольших массивов
+    Нет необходимости в динамическом изменении размера
+
+    Когда vector и array выполняют одинаковую роль:
+    Когда размер контейнера известен на этапе компиляции и не меняется
+    При работе с небольшими наборами данных
+    В шаблонном коде, где можно использовать оба контейнера
+    Когда важна скорость доступа к элементам (оба обеспечивают O(1))
+
+
+
+
+
