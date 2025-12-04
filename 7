@@ -1,18 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include <random>
-#include <algorithm>
-#include <ctime>
-#include <iomanip>
-
 using namespace std;
 
 // ======================== ПУНКТ 1 ========================
 // Используем vector для пункта 1
 
-vector<int> arr;  // Основной массив для пункта 1
-
+vector<int> arr;
 // Функция просмотра массива
 void viewArray() {
     if (arr.empty()) {
@@ -50,7 +44,6 @@ void searchElement(int value) {
             indices.push_back(i);
         }
     }
-
     if (indices.empty()) {
         cout << "Элемент " << value << " не найден []" << endl;
     }
@@ -63,7 +56,6 @@ void searchElement(int value) {
         cout << "]" << endl;
     }
 }
-
 // Функция для варианта: если количество элементов четное, удалить первый, иначе удалить до 4 последних если возможно
 void variantTask() {
     cout << "До выполнения задания: ";
@@ -97,7 +89,7 @@ void variantTask() {
 }
 
 // Дополнительный вариант: разбить сумму поровну в начало и конец
-void variant5() {
+void variant() {
     cout << "Введите число K: ";
     int K;
     cin >> K;
@@ -109,11 +101,10 @@ void variant5() {
         n++;
         sum += n;
     }
-
     cout << "Для K=" << K << " можно использовать числа 1.." << n << " (сумма=" << sum << ")" << endl;
 
     // Очищаем массив и заполняем нулями
-    int size = max(3, n);  // Минимум 3 элемента
+    int size = max(1, n);  
     arr.clear();
     arr.resize(size, 0);
 
@@ -134,12 +125,12 @@ void variant5() {
     cout << "Результат: ";
     viewArray();
 }
-
-// Пункта 1
-void menuPunkt1() {
+// Пункт 1
+int main() {
+    setlocale(LC_ALL, "Russian");
     int choice;
     do {
-        cout << "\n=== МЕНЮ (std::vector) ===" << endl;
+        cout << "\n=== МЕНЮ (vector) ===" << endl;
         cout << "0. Выход из меню" << endl;
         cout << "1. Просмотр массива" << endl;
         cout << "2. Добавить элемент в начало" << endl;
@@ -189,187 +180,11 @@ void menuPunkt1() {
             variantTask();
             break;
         case 7:
-            variant5();
+            variant();
             break;
         default:
             cout << "Неверный пункт меню!" << endl;
         }
     } while (choice != 0);
-}
-
-// ======================== ПУНКТ 2 ========================
-// Используем array для пункта 2
-
-// Функции сортировки с разными способами передачи параметров
-
-// 1. По значению (работает с копией массива)
-void sortByValue(array<int, 10> arr, bool ascending) {
-    if (ascending) {
-        sort(arr.begin(), arr.end());
-    }
-    else {
-        sort(arr.begin(), arr.end(), greater<int>());
-    }
-    cout << "Внутри функции sortByValue: ";
-    for (int i = 0; i < 10; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-}
-
-// 2. По ссылке (работает с оригинальным массивом)
-void sortByReference(array<int, 10>& arr, bool ascending) {
-    if (ascending) {
-        sort(arr.begin(), arr.end());
-    }
-    else {
-        sort(arr.begin(), arr.end(), greater<int>());
-    }
-    cout << "Внутри функции sortByReference: ";
-    for (int i = 0; i < 10; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-}
-
-// 3. По указателю (работает с оригинальным массивом)
-void sortByPointer(array<int, 10>* arr, bool ascending) {
-    if (ascending) {
-        sort(arr->begin(), arr->end());
-    }
-    else {
-        sort(arr->begin(), arr->end(), greater<int>());
-    }
-    cout << "Внутри функции sortByPointer: ";
-    for (int i = 0; i < 10; i++) {
-        cout << (*arr)[i] << " ";
-    }
-    cout << endl;
-}
-
-void demonstrateSorting() {
-    cout << "\n=== ДЕМОНСТРАЦИЯ РАЗНЫХ СПОСОБОВ ПЕРЕДАЧИ АРГУМЕНТОВ ===" << endl;
-
-    // Инициализация генератора случайных чисел
-    mt19937 gen(time(nullptr));
-    uniform_int_distribution<> dist(-10, 10);
-
-    // Создаем и заполняем массив
-    array<int, 10> myArray;
-    cout << "Исходный массив: ";
-    for (int i = 0; i < 10; i++) {
-        myArray[i] = dist(gen);
-        cout << myArray[i] << " ";
-    }
-    cout << endl;
-
-    // 1. Передача по значению
-    {
-        cout << "\n1. ПЕРЕДАЧА ПО ЗНАЧЕНИЮ:" << endl;
-        cout << "Сортировка по возрастанию..." << endl;
-        array<int, 10> copyArray = myArray;  // Создаем копию
-        sortByValue(copyArray, true);
-        cout << "Оригинальный массив после sortByValue: ";
-        for (int i = 0; i < 10; i++) {
-            cout << myArray[i] << " ";
-        }
-        cout << endl;
-        cout << "Вывод: оригинальный массив не изменился, т.к. функция работала с копией." << endl;
-    }
-
-    // 2. Передача по ссылке
-    {
-        cout << "\n2. ПЕРЕДАЧА ПО ССЫЛКЕ:" << endl;
-        cout << "Сортировка по убыванию..." << endl;
-        array<int, 10> copyArray = myArray;  // Восстанавливаем оригинальные значения
-        sortByReference(copyArray, false);
-        cout << "Массив после sortByReference: ";
-        for (int i = 0; i < 10; i++) {
-            cout << copyArray[i] << " ";
-        }
-        cout << endl;
-        cout << "Вывод: массив изменился, т.к. функция работала с оригиналом через ссылку." << endl;
-    }
-
-    // 3. Передача по указателю
-    {
-        cout << "\n3. ПЕРЕДАЧА ПО УКАЗАТЕЛЮ:" << endl;
-        cout << "Сортировка по возрастанию..." << endl;
-        array<int, 10> copyArray = myArray;  // Восстанавливаем оригинальные значения
-        sortByPointer(&copyArray, true);
-        cout << "Массив после sortByPointer: ";
-        for (int i = 0; i < 10; i++) {
-            cout << copyArray[i] << " ";
-        }
-        cout << endl;
-        cout << "Вывод: массив изменился, т.к. функция работала с оригиналом через указатель." << endl;
-    }
-}
-int main() {
-    setlocale(LC_ALL, "Russian");
-    srand(time(nullptr));
-    int mainChoice;
-    do {
-        cout << "\n=== ГЛАВНОЕ МЕНЮ ===" << endl;
-        cout << "1. Пункт 1 - Работа с вектором (динамический массив)" << endl;
-        cout << "2. Пункт 2 - Демонстрация способов передачи параметров (статический массив)" << endl;
-        cout << "0. Выход из программы" << endl;
-        cout << "Выберите пункт: ";
-        cin >> mainChoice;
-
-        switch (mainChoice) {
-        case 0:
-            cout << "Выход из программы..." << endl;
-            break;
-        case 1:
-            menuPunkt1();
-            break;
-        case 2:
-            demonstrateSorting();
-            break;
-        default:
-            cout << "Неверный пункт меню!" << endl;
-        }
-    } while (mainChoice != 0);
     return 0;
 }
-
-
-                          ОБЪЯСНЕНИЕ РАЗНИЦЫ
-    Передача по значению: создается полная копия массива, функция работает с копией
-    Плюсы: оригинальные данные защищены от изменений
-    Минусы: тратится память и время на копирование (особенно для больших массивов)
-    Передача по ссылке: функция получает доступ к оригинальному массиву 
-    Плюсы: эффективно по памяти и времени, можно изменять оригинал
-    Минусы: оригинал может быть изменен случайно
-    Передача по указателю: аналогична передаче по ссылке, но с синтаксисом указателей
-    Плюсы: можно передать nullptr, явно видно, что может быть изменение
-    Минусы: более сложный синтаксис, риск ошибок с указателями.
-
-
-
-                              ПУНКТ 3  
-
-    ОБЪЯСНЕНИЕ ВЫБОРА РЕАЛИЗАЦИИ
-    Пункт 1: используется std::vector, потому что: 
-    Нужны динамические операции (добавление, удаление элементов)
-    Размер массива может меняться во время выполнения
-    Требуется очистка всего массива (vector::clear())
-    vector предоставляет удобные методы insert(), erase(), push_back()
-
-    Пункт 2: используется std::array, потому что:
-    Размер фиксирован (10 элементов)
-    Нужен статический массив для демонстрации передачи параметров
-    array быстрее для небольших массивов
-    Нет необходимости в динамическом изменении размера
-
-    Когда vector и array выполняют одинаковую роль:
-    Когда размер контейнера известен на этапе компиляции и не меняется
-    При работе с небольшими наборами данных
-    В шаблонном коде, где можно использовать оба контейнера
-    Когда важна скорость доступа к элементам (оба обеспечивают O(1))
-
-
-
-
-
