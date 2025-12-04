@@ -188,3 +188,153 @@ int main() {
     } while (choice != 0);
     return 0;
 }
+
+
+
+#include <iostream>
+#include <vector>
+#include <array>
+#include <random>
+using namespace std;
+
+// ======================== ПУНКТ 2 ========================
+// Используем array для пункта 2
+
+// 1. По значению (работает с копией массива)
+void sortByValue(array<int, 10> arr, bool ascending) {
+    if (ascending) {
+        sort(arr.begin(), arr.end());
+    }
+    else {
+        sort(arr.begin(), arr.end(), greater<int>());
+    }
+    cout << "Внутри функции sortByValue: ";
+    for (int i = 0; i < 10; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+// 2. По ссылке (работает с оригинальным массивом)
+void sortByReference(array<int, 10>& arr, bool ascending) {
+    if (ascending) {
+        sort(arr.begin(), arr.end());
+    }
+    else {
+        sort(arr.begin(), arr.end(), greater<int>());
+    }
+    cout << "Внутри функции sortByReference: ";
+    for (int i = 0; i < 10; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+// 3. По указателю (работает с оригинальным массивом)
+void sortByPointer(array<int, 10>* arr, bool ascending) {
+    if (ascending) {
+        sort(arr->begin(), arr->end());
+    }
+    else {
+        sort(arr->begin(), arr->end(), greater<int>());
+    }
+    cout << "Внутри функции sortByPointer: ";
+    for (int i = 0; i < 10; i++) {
+        cout << (*arr)[i] << " ";
+    }
+    cout << endl;
+}
+
+void demonstrateSorting() {
+    cout << "\n=== ДЕМОНСТРАЦИЯ РАЗНЫХ СПОСОБОВ ПЕРЕДАЧИ АРГУМЕНТОВ ===" << endl;
+
+    // Инициализация генератора случайных чисел
+    mt19937 gen(time(nullptr));
+    uniform_int_distribution<> dist(-10, 10);
+
+    // Создаем и заполняем массив
+    array<int, 10> myArray;
+    cout << "Исходный массив: ";
+    for (int i = 0; i < 10; i++) {
+        myArray[i] = dist(gen);
+        cout << myArray[i] << " ";
+    }
+    cout << endl;
+
+    // 1. Передача по значению
+    {
+        cout << "\n1. ПЕРЕДАЧА ПО ЗНАЧЕНИЮ:" << endl;
+        cout << "Сортировка по возрастанию..." << endl;
+        array<int, 10> copyArray = myArray;  // Создаем копию
+        sortByValue(copyArray, true);
+        cout << "Оригинальный массив после sortByValue: ";
+        for (int i = 0; i < 10; i++) {
+            cout << myArray[i] << " ";
+        }
+        cout << endl;
+        cout << "Вывод: оригинальный массив не изменился, т.к. функция работала с копией." << endl;
+    }
+
+    // 2. Передача по ссылке
+    {
+        cout << "\n2. ПЕРЕДАЧА ПО ССЫЛКЕ:" << endl;
+        cout << "Сортировка по убыванию..." << endl;
+        array<int, 10> copyArray = myArray;  // Восстанавливаем оригинальные значения
+        sortByReference(copyArray, false);
+        cout << "Массив после sortByReference: ";
+        for (int i = 0; i < 10; i++) {
+            cout << copyArray[i] << " ";
+        }
+        cout << endl;
+        cout << "Вывод: массив изменился, т.к. функция работала с оригиналом через ссылку." << endl;
+    }
+
+    // 3. Передача по указателю
+    {
+        cout << "\n3. ПЕРЕДАЧА ПО УКАЗАТЕЛЮ:" << endl;
+        cout << "Сортировка по возрастанию..." << endl;
+        array<int, 10> copyArray = myArray;  // Восстанавливаем оригинальные значения
+        sortByPointer(&copyArray, true);
+        cout << "Массив после sortByPointer: ";
+        for (int i = 0; i < 10; i++) {
+            cout << copyArray[i] << " ";
+        }
+        cout << endl;
+        cout << "Вывод: массив изменился, т.к. функция работала с оригиналом через указатель." << endl;
+    }
+}
+int main() {
+    setlocale(LC_ALL, "Russian");
+    srand(time(nullptr));
+    int choice;
+    do {
+        cout << "\n=== МЕНЮ  ===" << endl;
+        cout << "0. Выход из меню" << endl;
+        cout << "1.По значению (работает с копией массива) " << endl;
+        cout << "2.По ссылке (работает с оригинальным массивом) " << endl;
+        cout << "3.По указателю (работает с оригинальным массивом) " << endl;
+        cout << "4.ДЕМОНСТРАЦИЯ РАЗНЫХ СПОСОБОВ ПЕРЕДАЧИ АРГУМЕНТОВ " << endl;
+        cin >> choice;
+
+        switch (choice) {
+        case 0:
+            cout << "Выход из меню..." << endl;
+            break;
+        case 1:
+            void sortByValue();
+            break;
+        case 2: 
+            void sortByReference();
+            break;
+        case 3: 
+            void sortByPointer();
+            break;
+        case 4:
+            void demonstrateSorting();
+            break;
+        default:
+            cout << "Неверный пункт меню!" << endl;
+        }
+    } while (choice != 0);
+    return 0;
+}
