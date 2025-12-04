@@ -1,0 +1,317 @@
+#include <iostream>
+#include <string>
+#include <limits>
+using namespace std;
+// Структура для книги
+struct Book {
+    string author;
+    string title;
+    int volume_number;
+    int page_count;
+    Book* next_volume;
+};
+// Структура для очереди чтения
+struct ReadingQueue {
+    Book* book;
+    ReadingQueue* next;
+};
+// Функции для работы с книгами
+Book* createBook(string author, string title, int volume_number, int page_count);
+void displayBook(Book* book);
+void displayCollection(Book* head);
+Book* findHardestBook(Book* head);
+Book* findEasiestBook(Book* head);
+void addBookToCollection(Book*& head, string author, string title, int volume_number, int page_count);
+void addToReadingQueue(ReadingQueue*& head, Book* book);
+void displayReadingQueue(ReadingQueue* head);
+void clearCollection(Book*& head);
+void clearReadingQueue(ReadingQueue*& head);
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    Book* collections[4] = { nullptr, nullptr, nullptr, nullptr };
+    ReadingQueue* reading_queue = nullptr;
+
+    // Создаем 4 собрания сочинений разных авторов
+    addBookToCollection(collections[0], "Лев Толстой", "Война и мир", 1, 450);
+    addBookToCollection(collections[0], "Лев Толстой", "Война и мир", 2, 480);
+    addBookToCollection(collections[0], "Лев Толстой", "Война и мир", 4, 420);
+
+    addBookToCollection(collections[1], "Кассандра Клэр", "Город костей", 1, 544);
+    addBookToCollection(collections[1], "Кассандра Клэр", "Город праха", 2, 512);
+    addBookToCollection(collections[1], "Кассандра Клэр", "Город небесного огня", 6, 736);
+
+    addBookToCollection(collections[2], "Антон Чехов", "Рассказы", 1, 280);
+    addBookToCollection(collections[2], "Антон Чехов", "Рассказы", 3, 310);
+    addBookToCollection(collections[2], "Антон Чехов", "Пьесы", 1, 380);
+
+    addBookToCollection(collections[3], "Керстин Гир", "Рубин", 1, 352);
+    addBookToCollection(collections[3], "Керстин Гир", "Сапфир", 2, 420);
+    addBookToCollection(collections[3], "Керстин Гир", "Изумруд", 3, 432);
+
+    int choice;
+    do {
+        cout << "\n=== МЕНЮ РАБОТЫ С КНИГАМИ ===" << endl;
+        cout << "1. Просмотр собраний сочинений" << endl;
+        cout << "2. Создание новой книги" << endl;
+        cout << "3. Поиск самой сложной книги автора" << endl;
+        cout << "4. Поиск самой легкой книги автора" << endl;
+        cout << "5. Добавление книги в собрание" << endl;
+        cout << "6. Создать очередь чтения" << endl;
+        cout << "7. Показать очередь чтения" << endl;
+        cout << "0. Выход" << endl;
+        cout << "Выберите пункт: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: {
+            cout << "\n--- СОБРАНИЯ СОЧИНЕНИЙ ---" << endl;
+            for (int i = 0; i < 4; i++) {
+                if (collections[i] != nullptr) {
+                    cout << "\nСобрание " << i + 1 << ":" << endl;
+                    displayCollection(collections[i]);
+                }
+            }
+            break;
+        }
+        case 2: {
+            string author, title;
+            int volume, pages;
+            cout << "\n--- СОЗДАНИЕ НОВОЙ КНИГИ ---" << endl;
+            cin.ignore();
+            cout << "Автор: ";
+            getline(cin, author);
+            cout << "Название: ";
+            getline(cin, title);
+            cout << "Номер тома: ";
+            cin >> volume;
+            cout << "Количество страниц: ";
+            cin >> pages;
+
+            Book* new_book = createBook(author, title, volume, pages);
+            cout << "\nСоздана книга:" << endl;
+            displayBook(new_book);
+            delete new_book;
+            break;
+        }
+        case 3: {
+            cout << "\n--- ПОИСК САМОЙ СЛОЖНОЙ КНИГИ ---" << endl;
+            for (int i = 0; i < 4; i++) {
+                if (collections[i] != nullptr) {
+                    Book* hardest = findHardestBook(collections[i]);
+                    if (hardest != nullptr) {
+                        cout << "Автор: " << collections[i]->author << endl;
+                        cout << "Самая сложная книга: ";
+                        displayBook(hardest);
+                    }
+                }
+            }
+            break;
+        }
+        case 4: {
+            cout << "\n--- ПОИСК САМОЙ ЛЕГКОЙ КНИГИ ---" << endl;
+            for (int i = 0; i < 4; i++) {
+                if (collections[i] != nullptr) {
+                    Book* easiest = findEasiestBook(collections[i]);
+                    if (easiest != nullptr) {
+                        cout << "Автор: " << collections[i]->author << endl;
+                        cout << "Самая легкая книга: ";
+                        displayBook(easiest);
+                    }
+                }
+            }
+            break;
+        }
+        case 5: {
+            string author, title;
+            int volume, pages, collection_num;
+
+            cout << "\n--- ДОБАВЛЕНИЕ КНИГИ В СОБРАНИЕ ---" << endl;
+            cout << "Выберите собрание (1-4): ";
+            cin >> collection_num;
+
+            if (collection_num < 1 || collection_num > 4) {
+                cout << "Неверный номер собрания!" << endl;
+                break;
+            }
+            cin.ignore();
+            cout << "Автор: ";
+            getline(cin, author);
+            cout << "Название: ";
+            getline(cin, title);
+            cout << "Номер тома: ";
+            cin >> volume;
+            cout << "Количество страниц: ";
+            cin >> pages;
+
+            addBookToCollection(collections[collection_num - 1], author, title, volume, pages);
+            cout << "Книга добавлена!" << endl;
+            break;
+        }
+        case 6: {
+            cout << "\n--- СОЗДАНИЕ ОЧЕРЕДИ ЧТЕНИЯ ---" << endl;
+            clearReadingQueue(reading_queue);
+
+            // Добавляем книги из разных собраний в очередь чтения
+            for (int i = 0; i < 4; i++) {
+                if (collections[i] != nullptr) {
+                    Book* current = collections[i];
+                    while (current != nullptr) {
+                        addToReadingQueue(reading_queue, current);
+                        current = current->next_volume;
+                    }
+                }
+            }
+            cout << "Очередь чтения создана!" << endl;
+            break;
+        }
+        case 7: {
+            cout << "\n--- ОЧЕРЕДЬ ЧТЕНИЯ НА ЛЕТО ---" << endl;
+            displayReadingQueue(reading_queue);
+            break;
+        }
+        case 0:
+            cout << "Выход из программы..." << endl;
+            break;
+
+        default:
+            cout << "Неверный выбор!" << endl;
+        }
+    } while (choice != 0);
+    // Очистка памяти
+    for (int i = 0; i < 4; i++) {
+        clearCollection(collections[i]);
+    }
+    clearReadingQueue(reading_queue);
+    return 0;
+}
+// Создание новой книги
+Book* createBook(string author, string title, int volume_number, int page_count) {
+    Book* new_book = new Book;
+    new_book->author = author;
+    new_book->title = title;
+    new_book->volume_number = volume_number;
+    new_book->page_count = page_count;
+    new_book->next_volume = nullptr;
+    return new_book;
+}
+// Просмотр книги
+void displayBook(Book* book) {
+    if (book != nullptr) {
+        cout << book->author << " - \"" << book->title << "\" (Том "
+            << book->volume_number << ", " << book->page_count << " стр.)" << endl;
+    }
+}
+// Просмотр всего собрания
+void displayCollection(Book* head) {
+    Book* current = head;
+    while (current != nullptr) {
+        displayBook(current);
+        current = current->next_volume;
+    }
+}
+// Поиск самой сложной книги (с наибольшим количеством страниц)
+Book* findHardestBook(Book* head) {
+    if (head == nullptr) return nullptr;
+    Book* hardest = head;
+    Book* current = head->next_volume;
+
+    while (current != nullptr) {
+        if (current->page_count > hardest->page_count) {
+            hardest = current;
+        }
+        current = current->next_volume;
+    }
+    return hardest;
+}
+// Поиск самой легкой книги (с наименьшим количеством страниц)
+Book* findEasiestBook(Book* head) {
+    if (head == nullptr) return nullptr;
+
+    Book* easiest = head;
+    Book* current = head->next_volume;
+
+    while (current != nullptr) {
+        if (current->page_count < easiest->page_count) {
+            easiest = current;
+        }
+        current = current->next_volume;
+    }
+    return easiest;
+}
+// Добавление книги в собрание (с сортировкой по номеру тома)
+void addBookToCollection(Book*& head, string author, string title, int volume_number, int page_count) {
+    Book* new_book = createBook(author, title, volume_number, page_count);
+
+    // Проверка на повторение номера тома
+    Book* current = head;
+    while (current != nullptr) {
+        if (current->volume_number == volume_number && current->title == title) {
+            cout << "Ошибка: книга с таким номером тома уже существует!" << endl;
+            delete new_book;
+            return;
+        }
+        current = current->next_volume;
+    }
+    // Если список пустой или новый элемент должен быть первым
+    if (head == nullptr || head->volume_number > volume_number) {
+        new_book->next_volume = head;
+        head = new_book;
+        return;
+    }
+    // Поиск места для вставки
+    current = head;
+    while (current->next_volume != nullptr && current->next_volume->volume_number < volume_number) {
+        current = current->next_volume;
+    }
+    new_book->next_volume = current->next_volume;
+    current->next_volume = new_book;
+}
+// Добавление книги в очередь чтения
+void addToReadingQueue(ReadingQueue*& head, Book* book) {
+    ReadingQueue* new_node = new ReadingQueue;
+    new_node->book = book;
+    new_node->next = nullptr;
+
+    if (head == nullptr) {
+        head = new_node;
+    }
+    else {
+        ReadingQueue* current = head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = new_node;
+    }
+}
+// Просмотр очереди чтения
+void displayReadingQueue(ReadingQueue* head) {
+    if (head == nullptr) {
+        cout << "Очередь чтения пуста!" << endl;
+        return;
+    }
+    ReadingQueue* current = head;
+    int counter = 1;
+    while (current != nullptr) {
+        cout << counter << ". ";
+        displayBook(current->book);
+        current = current->next;
+        counter++;
+    }
+}
+// Очистка собрания
+void clearCollection(Book*& head) {
+    while (head != nullptr) {
+        Book* temp = head;
+        head = head->next_volume;
+        delete temp;
+    }
+}
+// Очистка очереди чтения
+void clearReadingQueue(ReadingQueue*& head) {
+    while (head != nullptr) {
+        ReadingQueue* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
