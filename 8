@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <windows.h>
 using namespace std;
 // Структура для книги
 struct Book {
@@ -28,7 +29,8 @@ void clearCollection(Book*& head);
 void clearReadingQueue(ReadingQueue*& head);
 
 int main() {
-    setlocale(LC_ALL, "Russian");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
     Book* collections[4] = { nullptr, nullptr, nullptr, nullptr };
     ReadingQueue* reading_queue = nullptr;
 
