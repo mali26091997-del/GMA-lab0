@@ -6,7 +6,6 @@
 #include <limits>
 
 using namespace std;
-
 // Структура для хранения данных мультипаспорта
 struct Multipassport {
     int number;           // Номер паспорта (100-999)
@@ -16,7 +15,6 @@ struct Multipassport {
     string gender;        // Пол
     int age;              // Возраст
 };
-
 // Функция для проверки уникальности номера паспорта
 bool isPassportNumberUnique(const vector<Multipassport>& database, int number) {
     for (const auto& passport : database) {
@@ -26,7 +24,6 @@ bool isPassportNumberUnique(const vector<Multipassport>& database, int number) {
     }
     return true;
 }
-
 // Функция 1: Просмотр элемента
 void viewPassport(const Multipassport& passport) {
     cout << "\n=== Данные мультипаспорта ===" << endl;
@@ -38,49 +35,39 @@ void viewPassport(const Multipassport& passport) {
     cout << "Возраст: " << passport.age << endl;
     cout << "=============================\n" << endl;
 }
-
 // Функция для просмотра всех паспортов
 void viewAllPassports(const vector<Multipassport>& database) {
     if (database.empty()) {
         cout << "Картотека пуста!" << endl;
         return;
     }
-
     cout << "\n=== ВСЕ МУЛЬТИПАСПОРТА В КАРТОТЕКЕ ===" << endl;
     for (size_t i = 0; i < database.size(); i++) {
         cout << "\nЗапись #" << i + 1 << endl;
         viewPassport(database[i]);
     }
 }
-
 // Функция 2: Создание нового элемента
 void createNewPassport(vector<Multipassport>& database) {
     Multipassport newPassport;
-
     cout << "\n=== СОЗДАНИЕ НОВОГО МУЛЬТИПАСПОРТА ===" << endl;
-
     // Ввод номера паспорта с проверкой
     while (true) {
         cout << "Введите номер паспорта (100-999): ";
         int tempNumber;
         std::cin >> tempNumber;
-
         if (tempNumber < 100 || tempNumber > 999) {
             cout << "Ошибка! Номер должен быть в диапазоне 100-999." << endl;
             continue;
         }
-
         if (!isPassportNumberUnique(database, tempNumber)) {
             cout << "Ошибка! Паспорт с таким номером уже существует." << endl;
             continue;
         }
-
         newPassport.number = tempNumber;
         break;
     }
-
     std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     cout << "Введите фамилию: ";
     getline(std::cin, newPassport.surname);
 
@@ -101,18 +88,15 @@ void createNewPassport(vector<Multipassport>& database) {
         cout << "Ошибка! Возраст должен быть от 0 до 150 лет. Введите снова: ";
         std::cin >> newPassport.age;
     }
-
     database.push_back(newPassport);
     cout << "Мультипаспорт успешно создан и добавлен в картотеку!" << endl;
 }
-
 // Функция 3: Вывод всех, кто старше заданного возраста
 void displayOlderThan(const vector<Multipassport>& database) {
     if (database.empty()) {
         cout << "Картотека пуста!" << endl;
         return;
     }
-
     int minAge;
     cout << "\nВведите минимальный возраст: ";
     std::cin >> minAge;
@@ -159,7 +143,6 @@ void editPassportByNumber(vector<Multipassport>& database) {
     int searchNumber;
     cout << "\nВведите номер паспорта для редактирования: ";
     std::cin >> searchNumber;
-
     // Поиск паспорта по номеру
     for (auto& passport : database) {
         if (passport.number == searchNumber) {
@@ -226,7 +209,7 @@ void displayMenu() {
     cout << "Выберите действие: ";
 }
 int main() {
-    setlocale(LC_ALL, "Russian"); // Для поддержки русского языка
+    setlocale(LC_ALL, "Russian");
     vector<Multipassport> database;
     // Инициализация начальными данными
     initializeDatabase(database);
@@ -281,7 +264,6 @@ int main() {
         // Очистка буфера ввода
         std::cin.clear();
         std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     } while (choice != 0);
     return 0;
 }
