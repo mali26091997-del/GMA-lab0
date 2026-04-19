@@ -1,0 +1,37 @@
+<iostream>
+
+using namespace std;
+
+
+void showShifts(int A)
+{
+    cout <<"1 сдвиг вправо:" <<(A>>1) << endl;
+
+    cout << "2 сдвиг вправо:" << (A >> 2) << endl;
+
+    cout << "3 сдвиг вправо:" << (A >> 3) << endl;
+
+    return 0;
+}
+int main()
+{
+    setlocale (LC_ALL, "Russian");
+
+    int A, i, M;
+    cout << "введите значение верхнего основания:";
+    int a;
+    cin >> a;
+    cout << "введите значение нижнего основания:";
+    int b;
+    cin >> b;
+    cout << "введите значение высоты:";
+    int h;
+
+    cin >> h;
+
+    cout << 
+
+
+
+    return 0;
+}
